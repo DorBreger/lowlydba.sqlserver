@@ -24,6 +24,7 @@ $spec = @{
         sid = @{type = 'str'; required = $false }
         skip_password_reset = @{type = 'bool'; required = $false; default = $false }
         state = @{type = 'str'; required = $false; default = 'present'; choices = @('present', 'absent') }
+        roles = @{type = 'str'; required = $false; default = @() }
     }
 }
 
@@ -140,6 +141,25 @@ try {
             $output.PSStandardMembers.DefaultDisplayPropertySet.ReferencedPropertyNames.Add("Language")
         }
 
+        $getServerRolesSplat = @{
+            SqlInstance = $sqlInstance
+            SqlCredential = $sqlCredential
+            Login = $login
+        }
+        $loginRoles = Get-DbaServerRoleMember @getServerRolesSplat
+        $loginRoles | ForEach-Object {
+            if (!$loginRoles -contains $_.Role) {
+                $addServerRoleSplat = @{
+                    SqlInstance = $sqlInstance
+                    SqlCredential = $sqlCredential
+                    Login = $login
+                    Role = $_.Role
+                }
+                $module.Warn("adding role '$_.Role' ")
+                Add-DbaServerRoleMember -Confirm:$false @addServerRoleSplat
+                $module.reult.changed = $true
+            }
+        }
     }
 
     if ($null -ne $output) {
