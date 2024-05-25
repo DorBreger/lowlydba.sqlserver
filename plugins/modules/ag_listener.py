@@ -24,18 +24,18 @@ options:
     required: true
   ip_address:
     description:
-      - IP address(es) of the listener. Comma separated if multiple.
-    type: str
+      - IP address(es) of the listener.
+    type: list
     required: false
   subnet_ip:
     description:
-      - Subnet IP address(es) of the listener. Comma separated if multiple.
-    type: str
+      - Subnet IP address(es) of the listener.
+    type: list
     required: false
   subnet_mask:
     description:
-      - Sets the subnet IP mask(s) of the availability group listener. Comma separated if multiple.
-    type: str
+      - Sets the subnet IP mask(s) of the availability group listener.
+    type: list
     required: false
     default: 255.255.255.0
   port:
