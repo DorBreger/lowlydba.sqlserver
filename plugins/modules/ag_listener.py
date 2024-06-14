@@ -24,18 +24,22 @@ options:
     required: true
   ip_address:
     description:
-      - IP address(es) of the listener.
+      - IP address(es) of the listener. Comma separated if multiple.
     type: list
+    elements: str
     required: false
   subnet_ip:
     description:
-      - Subnet IP address(es) of the listener.
+      - Subnet IP address(es) of the listener. Comma separated if multiple.
     type: list
+    elements: str
     required: false
   subnet_mask:
     description:
-      - Sets the subnet IP mask(s) of the availability group listener.
+      - Sets the subnet IP mask(s) of the availability group listener. Comma separated if multiple.
     type: list
+    elements: str
+>>>>>>> containedAGs
     required: false
     default: 255.255.255.0
   port:
@@ -71,9 +75,13 @@ EXAMPLES = r'''
     sql_instance_primary: sql-01.myco.io
     ag_name: AG_MyDatabase
     listener_name: aglMyDatabase
-    ip_address: 10.0.20.20,10.1.77.77
-    subnet_ip: 255.255.252.0
-    subnet_mask: 255.255.255.0
+    ip_address:
+      - 10.0.20.20
+      - 10.1.77.77
+    subnet_ip:
+      - 255.255.252.0
+    subnet_mask:
+      - 255.255.255.0
 '''
 
 RETURN = r'''

@@ -22,7 +22,7 @@ $spec = @{
         shared_path = @{type = "str"; required = $false; default = $null }
         dtc_support_enabled = @{type = "bool"; required = $false; }
         basic_availability_group = @{type = "bool"; required = $false; }
-        contained_availability_group = @{type = "bool"; required = $false;}
+        contained_availability_group = @{type = "bool"; required = $false; }
         database_health_trigger = @{type = "bool"; required = $false; }
         is_distributed_ag = @{type = "bool"; required = $false; }
         use_last_backup = @{type = "bool"; required = $false; }
@@ -210,7 +210,9 @@ try {
                 $setAgSplat.Add("IsDistributedAvailabilityGroup", $isDistributedAg)
             }
             $compareProperty = ($existingAG.Properties | Where-Object Name -in $setAgSplat.Keys).Name
-            $agDiff = Compare-Object -ReferenceObject $existingAG -DifferenceObject $setAgSplat -Property $compareProperty
+            $existingAGHT = @{}
+            $existingAG.psobject.Properties | ForEach-Object { $existingAGHT[$_.Name] = $_.Value }
+            $agDiff = Compare-Object -ReferenceObject $existingAGHT -DifferenceObject $setAgSplat -Property $compareProperty
             if ($null -ne $agDiff) {
                 $output = $existingAG | Set-DbaAvailabilityGroup @setAgSplat
                 $module.Result.changed = $true
