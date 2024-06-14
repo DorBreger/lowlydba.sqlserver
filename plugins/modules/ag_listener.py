@@ -39,7 +39,6 @@ options:
       - Sets the subnet IP mask(s) of the availability group listener. Comma separated if multiple.
     type: list
     elements: str
->>>>>>> containedAGs
     required: false
     default: 255.255.255.0
   port:
